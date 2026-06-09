@@ -1,0 +1,11 @@
+2026-06-09 15:47:55,622 [compliance_agent] INFO HTTP Request: POST http://localhost:10000/register "HTTP/1.1 200 OK"
+2026-06-09 15:47:55,623 [compliance_agent] INFO Registered with registry (attempt 1)
+2026-06-09 15:47:55,625 [compliance_agent] INFO Compliance Agent listening on port 10103
+INFO:     Started server process [8832]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+INFO:     Uvicorn running on http://0.0.0.0:10103 (Press CTRL+C to quit)
+2026-06-09 15:49:10,996 [compliance_agent] WARNING Deprecated agent card endpoint '/.well-known/agent.json' accessed. Please use '/.well-known/agent-card.json' instead. This endpoint will be removed in a future version.
+2026-06-09 15:49:11,001 [compliance_agent] INFO ComplianceAgent executing | task=0822461d-db01-4ab0-af75-bc98014bb060 context=a9ddd8fd-e3ca-47c0-b301-9b8bb79bfd8a trace=a19206f0-19a6-451b-b7fd-e9921f42ce4e depth=2
+2026-06-09 15:49:11,382 [compliance_agent] INFO Task not found or task_id not set. Creating new task for event (task_id: 0822461d-db01-4ab0-af75-bc98014bb060, context_id: a9ddd8fd-e3ca-47c0-b301-9b8bb79bfd8a).
+2026-06-09 15:49:14,872 [compliance_agent] INFO HTTP Request: POST https://openrouter.ai/api/v1/chat/completions "HTTP/1.1 200 OK"
