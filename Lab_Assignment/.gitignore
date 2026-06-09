@@ -1,0 +1,18 @@
+# Environment variables
+.env
+.env.*
+!.env.example
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+.pytest_cache/
+
+# Databases / Models
+data/chromadb/
+*.sqlite3
+
+# OS generated files
+.DS_Store
+Thumbs.db

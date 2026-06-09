@@ -1,0 +1,21 @@
+2026-06-09 16:18:27,801 [law_agent] INFO HTTP Request: POST http://localhost:10000/register "HTTP/1.1 200 OK"
+2026-06-09 16:18:27,801 [law_agent] INFO Registered with registry (attempt 1)
+2026-06-09 16:18:27,803 [law_agent] INFO Law Agent listening on port 10101
+INFO:     Started server process [12972]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+INFO:     Uvicorn running on http://0.0.0.0:10101 (Press CTRL+C to quit)
+2026-06-09 16:18:45,929 [law_agent] WARNING Deprecated agent card endpoint '/.well-known/agent.json' accessed. Please use '/.well-known/agent-card.json' instead. This endpoint will be removed in a future version.
+2026-06-09 16:18:45,933 [law_agent] INFO LawAgent executing | task=1bae4160-8ffe-4188-b57c-90fb0d7ad62c context=d6de8c02-f765-4f47-9846-718c3b2939d4 trace=5397a877-6289-44c9-8609-fa15fcca77c9 depth=1
+2026-06-09 16:18:45,936 [law_agent] INFO Task not found or task_id not set. Creating new task for event (task_id: 1bae4160-8ffe-4188-b57c-90fb0d7ad62c, context_id: d6de8c02-f765-4f47-9846-718c3b2939d4).
+2026-06-09 16:18:48,199 [law_agent] INFO HTTP Request: POST https://openrouter.ai/api/v1/chat/completions "HTTP/1.1 200 OK"
+2026-06-09 16:19:03,964 [law_agent] INFO Rule-based routing decision: needs_tax=True needs_compliance=True
+2026-06-09 16:19:04,266 [law_agent] INFO HTTP Request: GET http://localhost:10000/discover/tax_question "HTTP/1.1 200 OK"
+2026-06-09 16:19:04,278 [law_agent] INFO HTTP Request: GET http://localhost:10000/discover/compliance_question "HTTP/1.1 200 OK"
+2026-06-09 16:19:04,547 [law_agent] INFO HTTP Request: GET http://localhost:10103/.well-known/agent.json "HTTP/1.1 200 OK"
+2026-06-09 16:19:04,548 [law_agent] INFO HTTP Request: GET http://localhost:10102/.well-known/agent.json "HTTP/1.1 200 OK"
+2026-06-09 16:19:15,958 [law_agent] INFO HTTP Request: POST http://localhost:10103 "HTTP/1.1 200 OK"
+2026-06-09 16:19:15,960 [law_agent] INFO Compliance Agent returned 6447 chars: '**Disclaimer:** The following is an educational overview of typical legal and regulatory consequences for a company that (i) breaches a contract and (ii) evades taxes. It is not legal advice. The appr'
+2026-06-09 16:19:22,720 [law_agent] INFO HTTP Request: POST http://localhost:10102 "HTTP/1.1 200 OK"
+2026-06-09 16:19:22,721 [law_agent] INFO Tax Agent returned 3402 chars: 'When a company breaches a contract and engages in tax evasion or avoidance, the consequences span civil, criminal, and administrative levels, with distinctions between corporate and individual liabili'
+2026-06-09 16:19:24,953 [law_agent] INFO HTTP Request: POST https://openrouter.ai/api/v1/chat/completions "HTTP/1.1 200 OK"
