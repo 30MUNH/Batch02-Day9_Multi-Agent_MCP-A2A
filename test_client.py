@@ -60,8 +60,33 @@ async def main() -> None:
             params=MSP(message=message),
         )
 
-        print("Sending request (this may take 30-60s while agents chain)...\n")
-        response = await client.send_message(request)
+        print("Sending request (this may take 30-60s while agents chain)...")
+        print("Waiting for response...\n")
+        
+        import time
+        start_time = time.time()
+        
+        async def spinner():
+            import sys
+            chars = "|/-\\"
+            idx = 0
+            while True:
+                elapsed = time.time() - start_time
+                sys.stdout.write(f"\r[{chars[idx]}] System is processing... Time elapsed: {elapsed:.1f}s ")
+                sys.stdout.flush()
+                idx = (idx + 1) % len(chars)
+                await asyncio.sleep(0.1)
+
+        spin_task = asyncio.create_task(spinner())
+        
+        try:
+            response = await client.send_message(request)
+        finally:
+            spin_task.cancel()
+            sys.stdout.write("\r" + " " * 60 + "\r")
+            
+        total_time = time.time() - start_time
+        print(f"\n✅ Processing complete! Total Time: {total_time:.2f} seconds\n")
 
         # Parse response
         result_text = ""

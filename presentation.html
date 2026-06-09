@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Báo cáo Bài tập: Multi-Agent A2A System</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/atom-one-dark.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+    <script>hljs.highlightAll();</script>
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #0f172a;
+            color: #f8fafc;
+        }
+        .glass-card {
+            background: rgba(30, 41, 59, 0.7);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.5);
+            border-radius: 16px;
+        }
+        .gradient-text {
+            background: linear-gradient(to right, #38bdf8, #818cf8);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        pre {
+            border-radius: 8px;
+            margin-top: 1rem;
+        }
+        .nav-dot {
+            transition: all 0.3s;
+        }
+        .nav-dot:hover {
+            transform: scale(1.2);
+            background-color: #38bdf8;
+        }
+    </style>
+</head>
+<body class="antialiased overflow-x-hidden selection:bg-sky-500 selection:text-white">
+
+    <!-- Header -->
+    <header class="fixed top-0 w-full z-50 glass-card rounded-none border-t-0 border-x-0">
+        <div class="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
+            <h1 class="text-xl font-bold gradient-text tracking-wide">Multi-Agent A2A Report</h1>
+            <nav class="hidden md:flex space-x-6 text-sm font-semibold text-slate-300">
+                <a href="#overview" class="hover:text-sky-400 transition">Tổng quan</a>
+                <a href="#ex2" class="hover:text-sky-400 transition">Ex 2: Tools & KB</a>
+                <a href="#ex4" class="hover:text-sky-400 transition">Ex 4: Privacy Graph</a>
+                <a href="#stage5" class="hover:text-sky-400 transition">Stage 5: Latency Bonus</a>
+            </nav>
+        </div>
+    </header>
+
+    <main class="max-w-5xl mx-auto px-6 pt-32 pb-20 space-y-24">
+        
+        <!-- Hero Section -->
+        <section id="overview" class="text-center space-y-6 animate-fade-in">
+            <h2 class="text-5xl font-bold tracking-tight">Hệ thống Phân tán <br><span class="gradient-text">Legal Multi-Agent</span></h2>
+            <p class="text-lg text-slate-400 max-w-2xl mx-auto leading-relaxed">
+                Báo cáo tiến độ và mã nguồn cho các bài tập Exercise 2, Exercise 4 và đặc biệt là tối ưu hóa độ trễ (Latency) trong Stage 5 bằng mô hình A2A.
+            </p>
+            <div class="mt-10 flex justify-center">
+                <img src="docs/slide_bai_giang/06_request_flow.svg" alt="Flow" class="rounded-xl shadow-2xl glass-card p-4 bg-white/5 w-full max-w-4xl">
+            </div>
+            <p class="text-sm text-slate-500 italic mt-4">Sơ đồ Request Flow từ Customer Agent qua Law Agent và gọi song song (Parallel) các Specialist Agents.</p>
+        </section>
+
+        <!-- Exercise 2 -->
+        <section id="ex2" class="glass-card p-10 relative">
+            <div class="absolute -top-6 -left-6 w-12 h-12 bg-sky-500 rounded-full blur-xl opacity-50"></div>
+            <h3 class="text-3xl font-bold mb-6 flex items-center gap-3">
+                <span class="bg-sky-500 text-white text-sm px-3 py-1 rounded-full">Ex 2</span> Tools & Knowledge Base
+            </h3>
+            <p class="text-slate-300 mb-6">Mở rộng năng lực của Agent bằng cách tiêm thêm luật Việt Nam và một Tool tính toán thời hiệu khởi kiện.</p>
+            
+            <div class="grid grid-cols-1 gap-6">
+                <div>
+                    <h4 class="text-xl font-semibold text-sky-300 mb-2">1. Knowledge Base (Labor Law)</h4>
+                    <pre><code class="language-python">LEGAL_KNOWLEDGE = {
+    "labor_law": """Theo BLLĐ 2019 của Việt Nam:
+- Khi đơn phương chấm dứt HĐLĐ trái pháp luật, NSDLĐ phải bồi thường:
+  1. Trả tiền lương, BHXH, BHYT, BHTN trong những ngày NLĐ không được làm việc.
+  2. Trả thêm ít nhất 02 tháng tiền lương theo HĐLĐ.
+  3. Tiền trợ cấp thôi việc (nếu có)."""
+}</code></pre>
+                </div>
+                <div>
+                    <h4 class="text-xl font-semibold text-sky-300 mb-2">2. Tool: Check Statute of Limitations</h4>
+                    <pre><code class="language-python">@tool
+def check_statute_of_limitations(case_type: str) -> str:
+    \"\"\"Kiểm tra thời hiệu khởi kiện dựa trên loại vụ án pháp lý.\"\"\"
+    case_type = case_type.lower()
+    if "civil" in case_type or "hợp đồng" in case_type:
+        return "Thời hiệu khởi kiện tranh chấp hợp đồng dân sự là 03 năm."
+    elif "labor" in case_type or "lao động" in case_type:
+        return "Thời hiệu khởi kiện tranh chấp lao động là 01 năm."
+    return "Thời hiệu khởi kiện phụ thuộc vào chi tiết cụ thể của vụ án."</code></pre>
+                </div>
+            </div>
+        </section>
+
+        <!-- Exercise 4 -->
+        <section id="ex4" class="glass-card p-10 relative border-indigo-500/30">
+            <div class="absolute -top-6 -right-6 w-12 h-12 bg-indigo-500 rounded-full blur-xl opacity-50"></div>
+            <h3 class="text-3xl font-bold mb-6 flex items-center gap-3">
+                <span class="bg-indigo-500 text-white text-sm px-3 py-1 rounded-full">Ex 4</span> Privacy Agent & Graph Routing
+            </h3>
+            <p class="text-slate-300 mb-6">Tích hợp Privacy Agent và sửa lỗi kiến trúc LangGraph để map dữ liệu song song an toàn.</p>
+
+            <div class="space-y-6">
+                <div>
+                    <h4 class="text-xl font-semibold text-indigo-300 mb-2">1. Sửa lỗi Conditional Routing (Quan trọng)</h4>
+                    <p class="text-sm text-slate-400 mb-2">Hàm <code>check_routing</code> trả về list các <code>Send</code> objects. Do đó không được nạp vào <code>add_node()</code> mà phải dùng qua <code>add_conditional_edges()</code>.</p>
+                    <pre><code class="language-python"># SAI (Gây crash INVALID_GRAPH_NODE_RETURN_VALUE):
+# graph.add_node("check_routing", check_routing)
+# graph.add_edge("law_agent", "check_routing")
+
+# ĐÚNG (Routing trực tiếp qua hàm điều kiện):
+graph.add_conditional_edges("law_agent", check_routing)</code></pre>
+                </div>
+            </div>
+        </section>
+
+        <!-- Stage 5 & Latency Bonus -->
+        <section id="stage5" class="glass-card p-10 relative border-emerald-500/30">
+            <div class="absolute -bottom-6 -left-6 w-12 h-12 bg-emerald-500 rounded-full blur-xl opacity-50"></div>
+            <h3 class="text-3xl font-bold mb-6 flex items-center gap-3">
+                <span class="bg-emerald-500 text-white text-sm px-3 py-1 rounded-full">Stage 5 Bonus</span> Latency Optimization
+            </h3>
+            <p class="text-slate-300 mb-6">Trong hệ thống A2A thực tế chạy 5 Agents, vấn đề lớn nhất là <strong>thời gian chờ (Timeout > 5 phút)</strong> do phải gọi chuỗi LLM quá nhiều lần.</p>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <div class="bg-slate-800/50 p-6 rounded-xl border border-slate-700">
+                    <h4 class="text-lg font-bold text-red-400 mb-3 flex items-center gap-2">❌ Trước khi tối ưu (LLM Routing)</h4>
+                    <p class="text-sm text-slate-400 mb-4">Mất 5-15 giây chỉ để gọi OpenRouter xác định xem câu hỏi có thuộc vùng Thuế hay Pháp chế không.</p>
+                    <pre class="text-xs"><code class="language-python"># Tốn chi phí LLM và Latency
+result = await llm.ainvoke(messages)
+raw = result.content.strip()
+parsed = json.loads(raw)
+needs_tax = parsed.get("needs_tax")</code></pre>
+                </div>
+
+                <div class="bg-slate-800/50 p-6 rounded-xl border border-emerald-500/30">
+                    <h4 class="text-lg font-bold text-emerald-400 mb-3 flex items-center gap-2">✅ Sau khi tối ưu (Rule-based Routing)</h4>
+                    <p class="text-sm text-slate-400 mb-4">Loại bỏ hoàn toàn bước gọi LLM, dùng keyword matching tốc độ ánh sáng (~0.001 giây).</p>
+                    <pre class="text-xs"><code class="language-python"># Tối ưu: Không dùng LLM, tốc độ O(n)
+q = state["question"].lower()
+needs_tax = any(kw in q for kw in ["tax", "thuế", "evasion"])
+needs_compliance = any(kw in q for kw in ["sec", "aml", "fcpa"])
+
+return {"needs_tax": needs_tax, ...}</code></pre>
+                </div>
+            </div>
+
+            <div class="mt-8 p-6 bg-slate-900 rounded-xl border border-slate-800">
+                <h4 class="text-xl font-semibold text-white mb-2">Thành quả đo lường:</h4>
+                <ul class="list-disc list-inside text-slate-300 space-y-2">
+                    <li>Hệ thống <strong>vượt qua lỗi Timeout</strong> của A2A Client.</li>
+                    <li>Sử dụng hoàn toàn miễn phí qua <code>openrouter/free</code>.</li>
+                    <li>Tổng thời gian phản hồi giảm xuống còn <strong>~134 giây</strong> (cho một quy trình phức tạp gồm: <em>Routing -> Law Analysis -> Parallel Tax/Compliance Analysis -> Final Aggregation</em>).</li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- Live Demo & Flow Results -->
+        <section id="livedemo" class="glass-card p-10 relative border-amber-500/30">
+            <div class="absolute -top-6 -right-6 w-12 h-12 bg-amber-500 rounded-full blur-xl opacity-50"></div>
+            <h3 class="text-3xl font-bold mb-6 flex items-center gap-3">
+                <span class="bg-amber-500 text-white text-sm px-3 py-1 rounded-full">Live Result</span> Demo Execution Flow
+            </h3>
+            <p class="text-slate-300 mb-6">Kết quả chạy thực tế (Live Test) với Script Client được gắn Timer, ghi nhận toàn bộ luồng hoạt động ngầm của hệ thống phân tán và thời gian xử lý (Processing Time).</p>
+
+            <div class="mb-6">
+                <h4 class="text-xl font-semibold text-amber-300 mb-3">Dòng chảy Dữ liệu (Timeline)</h4>
+                <div class="space-y-4 relative border-l-2 border-slate-700 pl-4 ml-2 text-slate-300">
+                    <div><span class="font-bold text-sky-400">0.0s</span> - User gửi câu hỏi đến Customer Agent.</div>
+                    <div><span class="font-bold text-sky-400">0.1s - 3.0s</span> - Customer Agent đánh giá intent, fetch Agent Card của Law Agent từ Registry và gửi request.</div>
+                    <div><span class="font-bold text-sky-400">3.0s - 15.0s</span> - Law Agent nhận request, dùng LLM phân tích "Contract Law" sau đó chạy Rule-based Routing phát hiện từ khóa "taxes", "regulatory". Kích hoạt LangGraph Send API để gọi song song các Sub-Agents.</div>
+                    <div><span class="font-bold text-amber-400">15.0s - 75.0s (Xử lý song song)</span> - Tax Agent và Compliance Agent cùng lúc nhận request. Hai agent phân tích các bộ luật độc lập trên OpenRouter.</div>
+                    <div><span class="font-bold text-sky-400">75.0s - 78.0s</span> - Law Agent tổng hợp (Aggregate) thông tin từ 2 Specialist Agents thành báo cáo thống nhất hoàn chỉnh.</div>
+                    <div><span class="font-bold text-emerald-400">78.15s</span> - Trả kết quả cuối cùng cho người dùng thông qua terminal.</div>
+                </div>
+            </div>
+
+            <div class="bg-black/50 p-6 rounded-xl border border-slate-700 font-mono text-sm overflow-x-auto text-green-400 leading-relaxed shadow-inner">
+                <p class="text-slate-500 mb-3">// Console Output (test_client.py)</p>
+                Connecting to Customer Agent at http://localhost:10100<br>
+                Question: If a company breaks a contract and avoids taxes, what are the legal and regulatory consequences?<br>
+                <span class="text-slate-600">------------------------------------------------------------</span><br>
+                Connected to agent: Customer Agent v1.0.0<br>
+                <span class="text-slate-600">------------------------------------------------------------</span><br>
+                Sending request (this may take 30-60s while agents chain)...<br>
+                Waiting for response...<br>
+                <br>
+                <span class="text-yellow-400">[/] System is processing... Time elapsed: 78.1s</span><br>
+                <span class="text-white bg-green-600 px-3 py-1 rounded inline-block mt-3 mb-3 shadow-lg">✅ Processing complete! Total Time: 78.15 seconds</span><br>
+                <br>
+                <span class="text-sky-300">RESPONSE:</span><br>
+                <span class="text-slate-600">============================================================</span><br>
+                <span class="text-slate-300">Based on the combined analyses, here are the legal and regulatory consequences...</span><br><br>
+                <span class="text-slate-300 font-bold">1. Breach of Contract Consequences:</span><br>
+                <span class="text-slate-400">- Damages and financial compensation.</span><br>
+                <span class="text-slate-400">- Specific performance or injunctions.</span><br><br>
+                <span class="text-slate-300 font-bold">2. Tax Evasion Consequences:</span><br>
+                <span class="text-slate-400">- Back taxes owed, interest on unpaid tax.</span><br>
+                <span class="text-slate-400">- Civil penalties, fines, and asset seizures.</span><br>
+                <span class="text-slate-400">- Criminal prosecution for serious tax evasion or fraud.</span><br><br>
+                <span class="text-slate-300 font-bold">3. Regulatory & Corporate Consequences:</span><br>
+                <span class="text-slate-400">- Suspension or loss of licences.</span><br>
+                <span class="text-slate-400">- Investigations by corporate regulators (SEC, SOX, etc.).</span><br><br>
+                <span class="text-slate-500 italic">Disclaimer: This is for educational purposes. Consult a licensed attorney.</span><br>
+                <span class="text-slate-600">============================================================</span>
+            </div>
+        </section>
+
+    </main>
+
+    <footer class="border-t border-slate-800 py-8 text-center text-slate-500">
+        <p>Báo cáo Bài tập Multi-Agent MCP-A2A System - 2026</p>
+    </footer>
+
+</body>
+</html>

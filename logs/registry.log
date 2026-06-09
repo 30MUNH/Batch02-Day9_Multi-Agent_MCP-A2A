@@ -1,7 +1,0 @@
-INFO:     127.0.0.1:54769 - "POST /register HTTP/1.1" 200 OK
-INFO:     127.0.0.1:54768 - "POST /register HTTP/1.1" 200 OK
-INFO:     127.0.0.1:54779 - "POST /register HTTP/1.1" 200 OK
-INFO:     127.0.0.1:54787 - "POST /register HTTP/1.1" 200 OK
-INFO:     127.0.0.1:54800 - "GET /discover/legal_question HTTP/1.1" 200 OK
-INFO:     127.0.0.1:51152 - "GET /discover/compliance_question HTTP/1.1" 200 OK
-INFO:     127.0.0.1:51153 - "GET /discover/tax_question HTTP/1.1" 200 OK
